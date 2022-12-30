@@ -13,6 +13,7 @@ export function LoadingScreen(props: LoadingScreenProps) {
         flex: 1,
         justifyContent: 'space-around',
         flexDirection: 'column',
+        backgroundColor: 'white',
       }}>
       <Text
         style={{
