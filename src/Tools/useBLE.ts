@@ -32,9 +32,9 @@ export const useBLE = () => {
       if (pendingConnections.length + sensorsConnected.length >= 3) {
         return;
       }
-      if (peripheral.rssi > RSSI_THRESHOLD) {
-        return;
-      }
+      // if (peripheral.rssi > RSSI_THRESHOLD) {
+      //   return;
+      // }
 
       let newSensor = new Sensor(peripheral);
       BleManager.connect(peripheral.id)
