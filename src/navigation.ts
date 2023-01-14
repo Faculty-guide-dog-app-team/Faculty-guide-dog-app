@@ -109,10 +109,17 @@ function doors_passed_in_slice(grid: Array<Array<Cell>>, path: Array<Cell>, prev
     let start_index = path.indexOf(previous_cell);
     let end_index = path.indexOf(next_cell);
     let doors_passed = 0;
-    for (let origin_cell of path.slice(start_index, end_index)){ // go through every cell in path in range <last turn; next turn)
-        if (is_passing_nearby_door(grid, origin_cell, next_facing)){
-            doors_passed += 1;
+    if (start_index == 0) {
+        for (let origin_cell of path.slice(start_index, end_index)){ // go through every cell in path in range <last turn; next turn)
+            if (is_passing_nearby_door(grid, origin_cell, next_facing)){
+                doors_passed += 1;        }
         }
+    }
+    else {
+        for (let origin_cell of path.slice(start_index+1, end_index)){ // go through every cell in path in range (last turn; next turn)
+            if (is_passing_nearby_door(grid, origin_cell, next_facing)){
+                doors_passed += 1;        }
+    }
     }
     return doors_passed;
 }
