@@ -114,6 +114,19 @@ function all_values(array_2d: Array<Array<any>>): Array<any>{
 // }
 
 
+function includes(array: Array<any>, target: any): boolean{
+    for (let item of array){
+        if (item == target){
+            return true
+        }
+    }
+    return false
+}
+
+
+
+
+
 /**
  * Takes the starting coordinates in the format [x, y] (column, row),
  * the goal's coordinates in the format [x, y] (column, row) and
@@ -137,7 +150,8 @@ export function find_path_dijkstra(start: [number, number], goal: [number, numbe
 
     start_cell.distance = 0;
     let unexplored_cells: Array<Cell> = all_values(grid);
-    while (unexplored_cells.includes(goal_cell)){
+    // while (unexplored_cells.includes(goal_cell)){
+    while (includes(unexplored_cells, goal_cell)){
         let closest = unexplored_cells.reduce((lowest, current) => { // getting the cell with the lowest distance
             if (current.distance < lowest.distance){
                 return current
