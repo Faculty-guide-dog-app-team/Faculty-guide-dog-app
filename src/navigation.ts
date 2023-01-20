@@ -140,17 +140,17 @@ function doors_passed_in_slice(grid: Array<Array<Cell>>, path: Array<Cell>, prev
  * @param path
  * @returns [doors passed before turn, turn direction, turn cell]
  */
-function path_door_counter(grid: Array<Array<Cell>>, path: Array<Cell>): Array<[number, string, Cell]> {
+function path_door_counter(grid: Array<Array<Cell>>, path: Array<Cell>): Array<[number, string]> {
     let turns = turn_coordinates(path);
     if (turns.length == 0){
         return [];
     }
-    let turns_with_doors: Array<[number, string, Cell]> = []
+    let turns_with_doors: Array<[number, string]> = []
     let previous_turn: [string, Cell] = ["north", path[0]];
     for (let next_turn of turns){
         let [next_facing, next_cell] = next_turn;
         let doors_passed = doors_passed_in_slice(grid, path, previous_turn, next_turn)
-        turns_with_doors.push([doors_passed, next_facing, next_cell])
+        turns_with_doors.push([doors_passed, next_facing])
         previous_turn = next_turn;
         }
     return turns_with_doors;
@@ -173,9 +173,8 @@ let number_grid = [
 
 let grid = number_to_object_grid(number_grid);
 let path = find_path_dijkstra([8,9], [2,1], grid);
-console.log(path);
 let turns_with_doors = path_door_counter(grid, path)
-console.log(turns_with_doors)
+export { number_to_object_grid, find_path_dijkstra, path_door_counter };
 // let turns = turn_coordinates(path);
 // console.log(turns);
 
