@@ -13,7 +13,7 @@ import {useBLE} from './Tools/useBLE';
 export default function App() {
   const sensorsConnected = useBLE();
   return sensorsConnected.length < 3 ? (
-    <LoadingScreen sensorsConnected={sensorsConnected.length} />
+    <LoadingScreen sensorsConnected={sensorsConnected} />
   ) : (
     <NavigationContainer>
       <RootStack.Navigator>

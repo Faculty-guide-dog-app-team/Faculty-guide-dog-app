@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import {enableBLEAndroid} from './BLE';
 import BleManager, {Peripheral} from 'react-native-ble-manager';
 import {RSSI_THRESHOLD, Sensor} from './Sensor';
@@ -20,6 +20,7 @@ export const useBLE = () => {
   const [pendingConnections, setPendingConnections] = useState<Array<Sensor>>(
     [],
   );
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   useEffect(() => {
     if (!enableBLEAndroid()) {
@@ -36,7 +37,7 @@ export const useBLE = () => {
       //   return;
       // }
 
-      let newSensor = new Sensor(peripheral);
+      let newSensor = new Sensor(peripheral, forceUpdate);
       BleManager.connect(peripheral.id)
         .then(() => {
           console.log('Sensor connected', peripheral.id);
