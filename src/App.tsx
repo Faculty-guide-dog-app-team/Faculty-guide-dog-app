@@ -8,10 +8,10 @@ import {DetailsScreen} from './Components/DetailsScreen';
 import BleManager from 'react-native-ble-manager';
 import {LoadingScreen} from './Components/LoadingScreen';
 import {NativeEventEmitter, NativeModules} from 'react-native';
-import {useBLE} from './Tools/useBLE';
+import {BLEProvider, useBLEContext} from './Tools/bleProvider';
 
-export default function App() {
-  const sensorsConnected = useBLE();
+function Main() {
+  const sensorsConnected = useBLEContext().sensorsConnected;
   return sensorsConnected.length < 3 ? (
     <LoadingScreen sensorsConnected={sensorsConnected} />
   ) : (
@@ -21,5 +21,13 @@ export default function App() {
         <RootStack.Screen name="Lista Kroków" component={DetailsScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
+  );
+}
+
+export default function App() {
+  return (
+    <BLEProvider>
+      <Main />
+    </BLEProvider>
   );
 }
