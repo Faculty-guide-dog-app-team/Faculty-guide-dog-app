@@ -1,10 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {ActivityIndicator, Text, View} from 'react-native';
-import {Sensor} from '../Tools/Sensor';
 
 interface LoadingScreenProps {
-  sensorsConnected: Array<Sensor>;
+  sensorsConnected: number;
 }
 
 export function LoadingScreen(props: LoadingScreenProps) {
@@ -29,17 +28,8 @@ export function LoadingScreen(props: LoadingScreenProps) {
         style={{
           textAlign: 'center',
         }}>
-        Połączono: {props.sensorsConnected.length}/3
+        Połączono: {props.sensorsConnected}/3
       </Text>
-      {props.sensorsConnected.map((sensor, i) => (
-        <Text
-          style={{
-            textAlign: 'center',
-          }}
-          key={i}>
-          ({sensor.x}, {sensor.y}): {sensor.getDistance()}
-        </Text>
-      ))}
     </View>
   );
 }

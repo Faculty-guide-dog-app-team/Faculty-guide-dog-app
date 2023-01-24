@@ -6,13 +6,13 @@ import BleManager, {
 } from 'react-native-ble-manager';
 
 const SENSOR_UPDATE_INTERVAL_MS = 1000;
-export const RSSI_THRESHOLD = -110;
+export const RSSI_THRESHOLD = -90;
 const LOCTION_SHATING_SERVICE = '6951f9c0-2375-49f5-8da9-f45c9f067dcb';
 const X_CHARACTERISTIC_UUID = '8eeec66e-71ce-11ed-a1eb-0242ac120002';
 const Y_CHARACTERISTIC_UUID = '74e7237c-71d0-11ed-a1eb-0242ac120002';
 
-const ONE_METER_RRSI = -60;
-const N = 3;
+const ONE_METER_RRSI = -59;
+const N = 2;
 
 export class Sensor implements Peripheral {
   rssi: number;

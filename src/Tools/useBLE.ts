@@ -4,6 +4,7 @@ import {enableBLEAndroid} from './BLE';
 import BleManager, {Peripheral} from 'react-native-ble-manager';
 import {RSSI_THRESHOLD, Sensor} from './Sensor';
 import {NativeEventEmitter, NativeModules} from 'react-native';
+import {coordinates_X_Y} from './coordinates';
 
 const bleManagerEmitter = new NativeEventEmitter(NativeModules.BleManager);
 interface DisconnectData {
@@ -33,9 +34,9 @@ export const useBLE = () => {
       if (pendingConnections.length + sensorsConnected.length >= 3) {
         return;
       }
-      // if (peripheral.rssi > RSSI_THRESHOLD) {
-      //   return;
-      // }
+      if (peripheral.rssi < RSSI_THRESHOLD) {
+        return;
+      }
 
       let newSensor = new Sensor(peripheral, forceUpdate);
       BleManager.connect(peripheral.id)
@@ -119,5 +120,29 @@ export const useBLE = () => {
     }
   }, [moduleInitialized, isScanning, sensorsConnected]);
 
-  return sensorsConnected;
+  let distances: number[] = [];
+  let locations: Array<number[]> = [];
+  let rssis: number[] = [];
+  let sensorsSorted = sensorsConnected.sort((a, b) => b.rssi - a.rssi);
+  for (let sensor of sensorsSorted) {
+    let distance = sensor.getDistance();
+    if (sensor.x != null && sensor.y != null && distance != null) {
+      distances.push(distance);
+      locations.push([sensor.x, sensor.y]);
+      rssis.push(sensor.rssi);
+    }
+  }
+  if (distances.length >= 3 && locations.length >= 3) {
+    let [X, Y] = coordinates_X_Y(
+      distances[0],
+      distances[1],
+      distances[2],
+      locations[0],
+      locations[1],
+      locations[2],
+    );
+
+    return [X, Y, sensorsConnected.length];
+  }
+  return [null, null, sensorsConnected.length];
 };

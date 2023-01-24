@@ -11,9 +11,9 @@ import {NativeEventEmitter, NativeModules} from 'react-native';
 import {BLEProvider, useBLEContext} from './Tools/bleProvider';
 
 function Main() {
-  const sensorsConnected = useBLEContext().sensorsConnected;
-  return sensorsConnected.length < 3 ? (
-    <LoadingScreen sensorsConnected={sensorsConnected} />
+  const sensorNumber = useBLEContext().sensorNumber;
+  return sensorNumber < 3 ? (
+    <LoadingScreen sensorsConnected={sensorNumber} />
   ) : (
     <NavigationContainer>
       <RootStack.Navigator>
