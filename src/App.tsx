@@ -5,9 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {RootStack} from './Components/RootStack';
 import {HomeScreen} from './Components/HomeScreen';
 import {DetailsScreen} from './Components/DetailsScreen';
-import BleManager from 'react-native-ble-manager';
 import {LoadingScreen} from './Components/LoadingScreen';
-import {NativeEventEmitter, NativeModules} from 'react-native';
 import {BLEProvider, useBLEContext} from './Tools/bleProvider';
 
 function Main() {

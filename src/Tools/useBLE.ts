@@ -6,6 +6,8 @@ import {RSSI_THRESHOLD, Sensor} from './Sensor';
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import {coordinates_X_Y} from './coordinates';
 
+import config from '../config.json';
+
 const bleManagerEmitter = new NativeEventEmitter(NativeModules.BleManager);
 interface DisconnectData {
   peripheral: string;
@@ -104,7 +106,11 @@ export const useBLE = () => {
   }, [moduleInitialized, pendingConnections.length, sensorsConnected]);
 
   useEffect(() => {
-    if (moduleInitialized && !isScanning && sensorsConnected.length < 3) {
+    if (
+      moduleInitialized &&
+      !isScanning &&
+      sensorsConnected.length < config.number_of_sensors
+    ) {
       setIsScanning(true);
       BleManager.scan(['6951f9c0-2375-49f5-8da9-f45c9f067dcb'], 5, false)
         .then(() => {
@@ -115,7 +121,7 @@ export const useBLE = () => {
           setIsScanning(false);
         });
     }
-    if (isScanning && sensorsConnected.length >= 3) {
+    if (isScanning && sensorsConnected.length >= config.number_of_sensors) {
       BleManager.stopScan();
     }
   }, [moduleInitialized, isScanning, sensorsConnected]);

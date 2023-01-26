@@ -1,4 +1,4 @@
-import {Cell, find_path_dijkstra, number_to_object_grid} from './dijkstra';;
+import {Cell, find_path_dijkstra, number_to_object_grid} from './dijkstra';
 
 function last_element(array: Array<any>) {
   return array[array.length - 1];
@@ -21,13 +21,13 @@ function turn_coordinates(
   let current_cell = path[0];
   let current_index = 0;
   let next_facing = 'north';
-  while (last_cell != current_cell) {
+  while (last_cell !== current_cell) {
     let [x2, y2] = path[current_index + 1].coordinates;
     let [x1, y1] = current_cell.coordinates;
     let difference = [x2 - x1, y2 - y1];
-    if (difference[0] == 0) {
+    if (difference[0] === 0) {
       // czy nie ma zmiany w X
-      if (difference[1] == 1) {
+      if (difference[1] === 1) {
         // czy kolejna jest niżej
         next_facing = 'south';
       } else {
@@ -36,7 +36,7 @@ function turn_coordinates(
       }
     } else {
       // zmiana w X
-      if (difference[0] == -1) {
+      if (difference[0] === -1) {
         // zmiana w lewo
         next_facing = 'west';
       } else {
@@ -45,7 +45,7 @@ function turn_coordinates(
       }
     }
 
-    if (next_facing != current_facing) {
+    if (next_facing !== current_facing) {
       // dołączanie skrętu jeśli zmienia się orientacja
       turns.push([next_facing, current_cell]);
       current_facing = next_facing;
@@ -59,19 +59,19 @@ function turn_coordinates(
 // function doors_between_points()
 
 function direction_vector(direction: string): [number, number] {
-  if (direction == 'north') {
-    return [0, -1];;
+  if (direction === 'north') {
+    return [0, -1];
   }
-  if (direction == 'south') {
-    return [0, 1];;
+  if (direction === 'south') {
+    return [0, 1];
   }
-  if (direction == 'east') {
-    return [1, 0];;
+  if (direction === 'east') {
+    return [1, 0];
   }
-  if (direction == 'west') {
-    return [-1, 0];;
-  } else  {
-    return [0, 0];;
+  if (direction === 'west') {
+    return [-1, 0];
+  } else {
+    return [0, 0];
   }
 }
 
@@ -88,7 +88,7 @@ function is_passing_nearby_door(
     current_column += change_vector[0];
     current_row += change_vector[1];
     let current_cell = grid[current_row][current_column];
-    if (current_cell.room_text != undefined) {
+    if (current_cell.room_text == undefined) {
       return true;
     } else if (!current_cell.is_walkable) {
       wall_found = true;
@@ -118,7 +118,7 @@ function doors_passed_in_slice(
   let start_index = path.indexOf(previous_cell);
   let end_index = path.indexOf(next_cell);
   let doors_passed = 0;
-  if (start_index == 0) {
+  if (start_index === 0) {
     for (let origin_cell of path.slice(start_index, end_index)) {
       // go through every cell in path in range <last turn; next turn)
       if (is_passing_nearby_door(grid, origin_cell, next_facing)) {
@@ -160,7 +160,7 @@ function path_door_counter(
   if (turns.length === 0) {
     return [];
   }
-  let turns_with_doors: Array<[number, string]> = [];;
+  let turns_with_doors: Array<[number, string]> = [];
   let previous_turn: [string, Cell] = ['north', path[0]];
   for (let next_turn of turns) {
     let [next_facing, next_cell] = next_turn;
@@ -170,7 +170,7 @@ function path_door_counter(
       previous_turn,
       next_turn,
     );
-    turns_with_doors.push([doors_passed, next_facing]);;
+    turns_with_doors.push([doors_passed, next_facing]);
     previous_turn = next_turn;
   }
   return turns_with_doors;
@@ -191,8 +191,8 @@ const number_grid = [
 ];
 
 export const grid = number_to_object_grid(number_grid);
-let path = find_path_dijkstra([8, 9], [2, 1], grid);
-let turns_with_doors = path_door_counter(grid, path);
+// let path = find_path_dijkstra([8, 9], [2, 1], grid);
+// let turns_with_doors = path_door_counter(grid, path);
 export {number_to_object_grid, find_path_dijkstra, path_door_counter};
 // let turns = turn_coordinates(path);
 // console.log(turns);

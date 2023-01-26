@@ -15,6 +15,9 @@
  * room_number: string, optional
  *      The number of the room
  */
+
+import config from '../config.json';
+
 export class Cell {
   distance: number;
   parent_coordinates: [number, number];
@@ -199,14 +202,7 @@ export function find_path_dijkstra(
   return path.reverse(); // changing the path from finish-start to start-finish
 }
 
-// export const grid = [
-//   [1, 1, 1, 1, 1, 1],
-//   [1, 0, 0, 0, 0, 1],
-//   [1, 0, 0, 0, 0, 1],
-//   [1, 0, 0, 0, 0, 1],
-//   [1, 0, 0, 0, 0, 1],
-//   [1, 1, 1, 1, 1, 1],
-// ];
+export const grid = config.grid;
 
 // let cell_grid = number_to_object_grid(number_grid);
 // let coordinates = all_coordinates(cell_grid);

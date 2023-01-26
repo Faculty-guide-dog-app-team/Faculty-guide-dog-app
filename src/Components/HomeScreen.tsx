@@ -12,16 +12,14 @@ type HomeScreenProps = NativeStackScreenProps<
 export function HomeScreen({navigation}: HomeScreenProps) {
   const [text, setText] = useState('');
   return (
-    <View style={{flex: 1, alignItems: 'center', backgroundColor:'white'}}>
-      <Image
-        source={require('./images/logo.png')}
-      />
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: 'white'}}>
+      <Image source={require('./images/logo.png')} />
       <TextInput
-        style={{fontSize: 30, margin: 10, color: 'black', textAlign:'center'}}
+        style={{fontSize: 30, margin: 10, color: 'black', textAlign: 'center'}}
         multiline={true}
         placeholder="Wprowadź numer sali, do której chcesz się dostać"
         placeholderTextColor={'gray'}
-        blurOnSubmit = {true}
+        blurOnSubmit={true}
         onSubmitEditing={() =>
           navigation.navigate('Lista Kroków', {itemId: text})
         }

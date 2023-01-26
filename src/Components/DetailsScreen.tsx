@@ -4,9 +4,9 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, Image} from 'react-native';
 import {RootStackParamList} from './RootStack';
 import {useBLEContext} from '../Tools/bleProvider';
-import {find_door} from '../dijkstra';
-import {grid} from '../navigation';
-import {createInstructions} from '../step_generator';
+import {find_door} from '../Tools/dijkstra';
+import {grid} from '../Tools/navigation';
+import {createInstructions} from '../Tools/step_generator';
 
 type DetailsScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -21,16 +21,23 @@ export function DetailsScreen({route}: DetailsScreenProps) {
   useEffect(() => {
     const door = find_door(itemId, grid);
     if (door == null) {
-      setSteps(['Nie ma takiej sali. Spróbuj ponownire.']);
+      setSteps(['Nie ma takiej sali. Spróbuj ponownie.']);
     } else if (X == null || Y == null) {
       setSteps(['Lokalizowanie...']);
     } else {
-      const location = [Math.ceil(Y), Math.ceil(X)];
-      const instructions = createInstructions(
-        grid,
-        location as [number, number],
-        door.coordinates as [number, number],
-      );
+      const location = [Math.round(Y), Math.round(X)];
+      let instructions: Array<string> = [];
+      try {
+        instructions = createInstructions(
+          grid,
+          location as [number, number],
+          door.coordinates as [number, number],
+        );
+      } catch (e) {
+        if (e instanceof TypeError) {
+          instructions = ['Nieprawidłowa lokalizacja'];
+        }
+      }
       setSteps(instructions);
     }
   }, [itemId, X, Y]);
@@ -45,7 +52,6 @@ export function DetailsScreen({route}: DetailsScreenProps) {
       }}>
       <Image source={require('./images/logo.png')} />
       <Text style={{fontSize: 30, color: 'black'}}>
-        {' '}
         Żeby dostać się do: {itemId}
       </Text>
       {steps?.map((instruction, i) => (
