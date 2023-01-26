@@ -88,7 +88,7 @@ function is_passing_nearby_door(
     current_column += change_vector[0];
     current_row += change_vector[1];
     let current_cell = grid[current_row][current_column];
-    if (current_cell.room_text == undefined) {
+    if (current_cell.room_text != undefined) {
       return true;
     } else if (!current_cell.is_walkable) {
       wall_found = true;
@@ -182,3 +182,5 @@ export const grid = number_to_object_grid();
 export {find_path_dijkstra, path_door_counter};
 // let turns = turn_coordinates(path);
 // console.log(turns);
+
+
