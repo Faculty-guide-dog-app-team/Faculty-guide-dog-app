@@ -19,27 +19,40 @@ export function DetailsScreen({route}: DetailsScreenProps) {
   const [steps, setSteps] = useState<Array<string> | null>(null);
 
   useEffect(() => {
-    const door = find_door(itemId, grid);
-    if (door == null) {
-      setSteps(['Nie ma takiej sali. Spróbuj ponownie.']);
-    } else if (X == null || Y == null) {
-      setSteps(['Lokalizowanie...']);
-    } else {
-      const location = [Math.round(Y), Math.round(X)];
-      let instructions: Array<string> = [];
-      try {
-        instructions = createInstructions(
-          grid,
-          location as [number, number],
-          door.coordinates as [number, number],
-        );
-      } catch (e) {
-        if (e instanceof TypeError) {
-          instructions = ['Nieprawidłowa lokalizacja'];
+    let update = () => {
+      console.log('update');
+      const door = find_door(itemId, grid);
+      if (door == null) {
+        setSteps(['Nie ma takiej sali. Spróbuj ponownie.']);
+      } else if (X == null || Y == null) {
+        setSteps(['Lokalizowanie...']);
+      } else {
+        const location = [Math.round(Y), Math.round(X)];
+        let instructions: Array<string> = [];
+        try {
+          instructions = createInstructions(
+            grid,
+            [-26, 25],
+            door.coordinates as [number, number],
+          );
+        } catch (e) {
+          if (e instanceof TypeError) {
+            instructions = [
+              'Nieprawidłowa lokalizacja',
+              String(location[0]),
+              String(location[1]),
+            ];
+          }
         }
+        setSteps(instructions);
       }
-      setSteps(instructions);
-    }
+    };
+
+    const interval = setInterval(update, 500);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [itemId, X, Y]);
 
   return (

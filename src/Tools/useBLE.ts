@@ -138,6 +138,8 @@ export const useBLE = () => {
       rssis.push(sensor.rssi);
     }
   }
+  // console.log(distances);
+  // console.log(locations);
   if (distances.length >= 3 && locations.length >= 3) {
     let [X, Y] = coordinates_X_Y(
       distances[0],
@@ -147,7 +149,7 @@ export const useBLE = () => {
       locations[1],
       locations[2],
     );
-
+    console.log([X, Y]);
     return [X, Y, sensorsConnected.length];
   }
   return [null, null, sensorsConnected.length];

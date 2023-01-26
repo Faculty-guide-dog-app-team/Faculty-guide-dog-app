@@ -20,7 +20,7 @@ import config from '../config.json';
 
 export class Cell {
   distance: number;
-  parent_coordinates: [number, number];
+  parent_coordinates?: [number, number];
   is_walkable: boolean;
   coordinates: [number, number];
   room_text?: string;
@@ -32,7 +32,6 @@ export class Cell {
     room_text?: string,
   ) {
     this.distance = distance;
-    this.parent_coordinates = coordinates;
     this.is_walkable = is_walkable;
     this.coordinates = coordinates;
     this.room_text = room_text;
@@ -49,9 +48,8 @@ export class Cell {
  * @param number_grid
  * @returns
  */
-export function number_to_object_grid(
-  number_grid: Array<Array<number>>,
-): Array<Array<Cell>> {
+export function number_to_object_grid(): Array<Array<Cell>> {
+  let number_grid = config.grid;
   let object_grid: Array<Array<Cell>> = [];
   let row_index = 0;
   for (let row of number_grid) {
@@ -61,15 +59,20 @@ export function number_to_object_grid(
       switch (
         number // decyduje czy da się przejść przez komórkę
       ) {
-        case 0: // ścieżka
+        case '0': // ścieżka
           object_row.push(new Cell(Infinity, true, [column_index, row_index]));
           break;
-        case 1: // ściana
+        case '1': // ściana
           object_row.push(new Cell(Infinity, false, [column_index, row_index]));
           break;
-        case 2: // drzwi
+        case '2': // drzwi
           object_row.push(
-            new Cell(Infinity, false, [column_index, row_index], '123'),
+            new Cell(Infinity, false, [column_index, row_index], 'nn'),
+          );
+          break;
+        default:
+          object_row.push(
+            new Cell(Infinity, false, [column_index, row_index], number),
           );
           break;
       }
@@ -116,7 +119,7 @@ function all_values(array_2d: Array<Array<any>>): Array<any> {
 export function find_door(room: string, grid: Array<Array<Cell>>): Cell | null {
   for (let row of grid) {
     for (let cell of row) {
-      if (cell.room_text == room) {
+      if (cell.room_text === room) {
         return cell;
       }
     }
@@ -153,9 +156,11 @@ export function find_path_dijkstra(
   grid: Array<Array<Cell>>,
 ): Array<Cell> {
   let path: Array<Cell> = [];
+  start[0] = Math.abs(start[0]);
+  start[1] = Math.abs(start[1]);
   let start_cell = grid[start[1]][start[0]];
   let goal_cell = grid[goal[1]][goal[0]];
-  if (start == goal) {
+  if (start === goal) {
     return [start_cell];
   }
 
@@ -195,14 +200,15 @@ export function find_path_dijkstra(
     // making the array of all parents of the final cell
     path.push(current_cell);
     let next_coordinates = current_cell.parent_coordinates;
+    if (next_coordinates === undefined) {
+      throw TypeError;
+    }
     current_cell = grid[next_coordinates[1]][next_coordinates[0]];
   }
   path.push(current_cell); // adding the starting cell to the end
 
   return path.reverse(); // changing the path from finish-start to start-finish
 }
-
-export const grid = config.grid;
 
 // let cell_grid = number_to_object_grid(number_grid);
 // let coordinates = all_coordinates(cell_grid);

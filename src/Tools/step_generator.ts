@@ -1,8 +1,5 @@
 import {Cell} from './dijkstra';
-import {
-  find_path_dijkstra,
-  path_door_counter,
-} from './navigation';;
+import {find_path_dijkstra, path_door_counter} from './navigation';
 const directionMap = {
   north: {
     west: 'skręć w lewo',
@@ -86,11 +83,11 @@ export function createInstructions(
   // then iterates every turn and number of doors
   // it creates a list of instructions and returns them in an array
   let path = find_path_dijkstra(start, target, grid);
-  let turns_with_doors = path_door_counter(grid, path);;
+  let turns_with_doors = path_door_counter(grid, path);
   // checking if first move is in north direction
   let ifnorth =
-    path[0].coordinates[0] == path[1].coordinates[0] &&
-    path[0].coordinates[1] > path[1].coordinates[1];;
+    path[0].coordinates[0] === path[1].coordinates[0] &&
+    path[0].coordinates[1] > path[1].coordinates[1];
   // checking if the target is on the end of a corridor
   let if_end_at_turn_1 = [
     path[path.length - 1].coordinates[0] - path[path.length - 2].coordinates[0],
@@ -101,20 +98,20 @@ export function createInstructions(
     path[path.length - 2].coordinates[1] - path[path.length - 3].coordinates[1],
   ];
   let if_end_at_turn = !(
-    if_end_at_turn_1[0] == if_end_at_turn_2[0] &&
-    if_end_at_turn_1[1] == if_end_at_turn_2[1]
+    if_end_at_turn_1[0] === if_end_at_turn_2[0] &&
+    if_end_at_turn_1[1] === if_end_at_turn_2[1]
   );
   let number_of_steps = 0;
-  let instructions: string[] = [];;
+  let instructions: string[] = [];
   for (let [doors, direction] of turns_with_doors) {
-    if (number_of_steps == 0) {
+    if (number_of_steps === 0) {
       if (ifnorth) {
         instructions.push(translateFirstMove('north'));
       } else {
         instructions.push(translateFirstMove(direction));
       }
     }
-    if (number_of_steps == turns_with_doors.length - 1) {
+    if (number_of_steps === turns_with_doors.length - 1) {
       if (if_end_at_turn) {
         instructions.push(
           `Po minięciu ${doors} drzwi cel będzie ${translateLastMove(
@@ -129,7 +126,7 @@ export function createInstructions(
             direction,
           )}`,
         );
-        instructions.push(`Cel będzie na końcu korytarza`);
+        instructions.push('Cel będzie na końcu korytarza');
       }
     } else if (number_of_steps >= 1) {
       instructions.push(

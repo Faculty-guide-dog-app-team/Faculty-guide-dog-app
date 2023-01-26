@@ -176,23 +176,9 @@ function path_door_counter(
   return turns_with_doors;
 }
 
-const number_grid = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1],
-  [1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 2, 2, 2, 1, 0, 0, 1],
-  [1, 0, 2, 0, 0, 0, 0, 0, 0, 2, 1],
-  [1, 0, 1, 0, 0, 0, 0, 0, 0, 2, 1],
-  [1, 0, 1, 1, 2, 2, 1, 1, 0, 2, 1],
-  [1, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1],
-  [1, 0, 0, 0, 0, 0, 0, 1, 0, 2, 1],
-  [1, 0, 0, 0, 0, 0, 0, 1, 0, 2, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-];
-
-export const grid = number_to_object_grid(number_grid);
+export const grid = number_to_object_grid();
 // let path = find_path_dijkstra([8, 9], [2, 1], grid);
 // let turns_with_doors = path_door_counter(grid, path);
-export {number_to_object_grid, find_path_dijkstra, path_door_counter};
+export {find_path_dijkstra, path_door_counter};
 // let turns = turn_coordinates(path);
 // console.log(turns);
