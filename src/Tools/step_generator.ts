@@ -103,7 +103,7 @@ export function createInstructions(
   );
   let number_of_steps = 0;
   let instructions: string[] = [];
-  for (let [doors, direction] of turns_with_doors) {
+  for (let [doors, direction, number_of_steps_in_turn] of turns_with_doors) {
     if (number_of_steps === 0) {
       if (ifnorth) {
         instructions.push(translateFirstMove('north'));
@@ -113,32 +113,78 @@ export function createInstructions(
     }
     if (number_of_steps === turns_with_doors.length - 1) {
       if (if_end_at_turn) {
+        if (doors == 0) {
+          instructions.push(
+            `Po zrobieniu ${number_of_steps_in_turn} kroków cel będzie ${translateLastMove(
+              turns_with_doors[number_of_steps - 1][1],
+              direction,
+            )} `,
+          );
+        }
+        else
+        {
+          instructions.push(
+            `Po minięciu ${doors} drzwi cel będzie ${translateLastMove(
+              turns_with_doors[number_of_steps - 1][1],
+              direction,
+            )} `,
+          );
+        }
+        
+      } else {
+        if (doors == 0) {
+          instructions.push(
+            `Po zrobieniu ${number_of_steps_in_turn} kroków ${translateDirection(
+              turns_with_doors[number_of_steps - 1][1],
+              direction,
+            )}`,
+          );
+        }
+        else {
+          instructions.push(
+            `Po minięciu ${doors} drzwi ${translateDirection(
+              turns_with_doors[number_of_steps - 1][1],
+              direction,
+            )}`,
+          );
+        }
+
+        instructions.push('Idź prosto do celu');
+      }
+    } else if (number_of_steps >= 1) {
+      if (doors == 0)
+      {
         instructions.push(
-          `Po minięciu ${doors} drzwi cel będzie ${translateLastMove(
+          `Po zrobieniu ${number_of_steps_in_turn} kroków ${translateDirection(
             turns_with_doors[number_of_steps - 1][1],
             direction,
-          )} `,
-        );
-      } else {
+          )}`,
+          );
+      }
+      else
+      {
         instructions.push(
           `Po minięciu ${doors} drzwi ${translateDirection(
             turns_with_doors[number_of_steps - 1][1],
             direction,
           )}`,
         );
-        instructions.push('Cel będzie na końcu korytarza');
       }
-    } else if (number_of_steps >= 1) {
-      instructions.push(
-        `Po minięciu ${doors} drzwi ${translateDirection(
-          turns_with_doors[number_of_steps - 1][1],
-          direction,
-        )}`,
-      );
+      
     } else if (ifnorth) {
-      instructions.push(
-        `Po minięciu ${doors} drzwi ${translateDirection('north', direction)}`,
-      );
+      if (doors == 0)
+      {
+        instructions.push(
+          `Po zrobieniu ${number_of_steps_in_turn} kroków ${translateDirection('north', direction)}`,
+        );
+      }
+      else
+      {
+        instructions.push(
+          `Po minięciu ${doors} drzwi ${translateDirection('north', direction)}`,
+        );
+      }
+
     }
     number_of_steps += 1;
   }
