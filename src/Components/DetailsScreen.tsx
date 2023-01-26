@@ -20,7 +20,6 @@ export function DetailsScreen({route}: DetailsScreenProps) {
 
   useEffect(() => {
     let update = () => {
-      console.log('update');
       const door = find_door(itemId, grid);
       if (door == null) {
         setSteps(['Nie ma takiej sali. Spróbuj ponownie.']);
@@ -32,16 +31,12 @@ export function DetailsScreen({route}: DetailsScreenProps) {
         try {
           instructions = createInstructions(
             grid,
-            [-26, 25],
+            location as [number, number],
             door.coordinates as [number, number],
           );
         } catch (e) {
           if (e instanceof TypeError) {
-            instructions = [
-              'Nieprawidłowa lokalizacja',
-              String(location[0]),
-              String(location[1]),
-            ];
+            instructions = ['Nieprawidłowa lokalizacja'];
           }
         }
         setSteps(instructions);
@@ -63,6 +58,13 @@ export function DetailsScreen({route}: DetailsScreenProps) {
         backgroundColor: 'white',
         padding: 20,
       }}>
+      <Text
+        style={{
+          fontSize: 18,
+          color: 'gray',
+        }}>
+        x: {X} y: {Y}
+      </Text>
       <Image source={require('./images/logo.png')} />
       <Text style={{fontSize: 30, color: 'black'}}>
         Żeby dostać się do: {itemId}
