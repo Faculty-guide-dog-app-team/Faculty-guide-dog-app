@@ -155,14 +155,17 @@ function doors_passed_in_slice(
 function path_door_counter(
   grid: Array<Array<Cell>>,
   path: Array<Cell>,
-): Array<[number, string]> {
+): Array<[number, string, number]> {
   let turns = turn_coordinates(path);
   if (turns.length === 0) {
     return [];
   }
-  let turns_with_doors: Array<[number, string]> = [];
+  let turns_with_doors: Array<[number, string, number]> = [];
   let previous_turn: [string, Cell] = ['north', path[0]];
   for (let next_turn of turns) {
+    let start_index = path.indexOf(previous_turn[1]);
+    let end_index = path.indexOf(next_turn[1]);
+    let steps = end_index - start_index
     let [next_facing, next_cell] = next_turn;
     let doors_passed = doors_passed_in_slice(
       grid,
@@ -170,7 +173,7 @@ function path_door_counter(
       previous_turn,
       next_turn,
     );
-    turns_with_doors.push([doors_passed, next_facing]);
+    turns_with_doors.push([doors_passed, next_facing, steps]);
     previous_turn = next_turn;
   }
   return turns_with_doors;
