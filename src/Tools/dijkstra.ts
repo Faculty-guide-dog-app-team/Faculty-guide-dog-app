@@ -164,6 +164,12 @@ export function find_path_dijkstra(
     return [start_cell];
   }
 
+  if (!start_cell.is_walkable){
+    let nearest = nearest_open(start_cell, grid)
+    if (nearest != undefined){
+      start_cell = nearest
+    }
+  }
   start_cell.distance = 0;
   let unexplored_cells: Array<Cell> = all_values(grid);
   // while (unexplored_cells.includes(goal_cell)){
@@ -209,6 +215,33 @@ export function find_path_dijkstra(
 
   return path.reverse(); // changing the path from finish-start to start-finish
 }
+
+
+function nearest_open(spot: Cell , grid: Cell[][],) : Cell | undefined {
+  let queue: Cell[] = []
+  queue.push(spot)
+  let visited: boolean[][] = []
+  for (let row in grid) {
+    for (let column in grid[0]){
+      let newrow = parseInt(row)
+      visited[newrow].push(false)
+    }
+  }
+  while (queue.length){
+    let current_spot = queue[0]
+    if (current_spot.is_walkable){
+      return current_spot
+    }
+    let [column, row] = current_spot.coordinates
+    queue.push(grid[row - 1][column])
+    queue.push(grid[row][column-1])
+    queue.push(grid[row + 1][column])
+    queue.push(grid[row][column+1])
+    queue.splice(0, 1);
+  }
+  return undefined
+}
+
 
 // let cell_grid = number_to_object_grid(number_grid);
 // let coordinates = all_coordinates(cell_grid);
