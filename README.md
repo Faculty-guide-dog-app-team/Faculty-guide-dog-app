@@ -3,7 +3,7 @@
 
 ## This project was done for the Group Project class of the CS course at the Warsaw University of Technology
 
-This is a prototype of an application which helps people move find their way around a public building such as a government office or, in our case, the Faculty of Electronics and Information Technology at WUT.
+This is a prototype of an application which helps people find their way around a public building such as a government office or, in our case, the Faculty of Electronics and Information Technology at WUT.
 It utilises BLE devices placed around the building we wish to navigate which stream their location. Based on the strenght of the signal we are able to determine the location of the user's phone and select the optimal path towards the desired room (or any other pre-defined place on the map).
 
 
