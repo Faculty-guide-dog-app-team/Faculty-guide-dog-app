@@ -1,4 +1,4 @@
-## Konfiguracja
+## [Configuration](https://reactnative.dev/docs/environment-setup)
 [link](https://reactnative.dev/docs/environment-setup)
 
 ## This project was done for the Group Project class of the CS course at the Warsaw University of Technology
